@@ -7,7 +7,7 @@
 </head>
 <body>
 	
-	<div ng-controller="NotasAppCrl" class="span4">
+	<div ng-controller="NotasAppCrl" class="container-fluid">
 		<h2>Cabulador</h2>
 		<accordion close-others="oneAtATime" >
 			<accordion-group heading="{{materia.title}}" ng-repeat="materia in materias | orderBy: 'title'">
