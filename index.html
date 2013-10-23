@@ -9,14 +9,19 @@
 	
 	<div ng-controller="NotasAppCrl">
 		<h2>Cabulador</h2>
-	<accordion close-others="oneAtATime">
+	<accordion close-others="oneAtATime" class="span4">
 		<accordion-group heading="{{materia.title}}" ng-repeat="materia in materias | orderBy: 'title'">
 		  <form >
 		  	<div class="controls controls-row">
-		  		<h4>Nome da Disciplina e Faltas</h4>
-				<input class="span4" type="text" placeholder="Nome da Matéria" ng-model="materia.title">
-				<input class="span2" type="text" placeholder="Faltas">
-				<button class="btn btn-warning span1">+1</button>
+		  		<div class="controls-row">
+		  			<h4>Nome da Disciplina e Faltas</h4>
+		  			<input class="span3" type="text" placeholder="Nome da Matéria" ng-model="materia.title">
+		  		</div>
+		  		<div class="controls-row">
+		  			<input class="span2" type="text" placeholder="Faltas">
+					<button class="btn btn-warning span1">+1</button>
+		  		</div>
+				
 			</div>
 			<div class="controls controls-row">
 				<h4>Notas</h4>
