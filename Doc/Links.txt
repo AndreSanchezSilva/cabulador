@@ -1,0 +1,8 @@
+AngularStrap
+
+http://mgcrea.github.io/angular-strap/
+
+
+Angular-ui Bootstrap
+
+https://github.com/angular-ui/bootstrap
