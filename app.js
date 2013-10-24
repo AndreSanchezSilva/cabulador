@@ -61,7 +61,7 @@ function NotasAppCrl($scope) {
     {
       config: {
         nome: "Design de Interação",
-        faltasPermitidas: 40,
+        faltasPermitidas: 20,
         notaMinima: 240,
         bimestral: true
       },
@@ -72,7 +72,7 @@ function NotasAppCrl($scope) {
     {
       config: {
         nome: "Multimídia para a Internet",
-        faltasPermitidas: 40,
+        faltasPermitidas: 20,
         notaMinima: 240,
         bimestral: true
       },

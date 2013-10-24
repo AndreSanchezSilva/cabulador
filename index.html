@@ -9,10 +9,10 @@
 </head>
 <body>
 
-	<div ng-controller="NotasAppCrl" class="container-fluid span5" >
+	<div ng-controller="NotasAppCrl" class="container-fluid span4" >
 		<h2>Cabulador</h2>
 		<accordion close-others="oneAtATime" >
-			<accordion-group  ng-repeat="materia in materias2 | orderBy: 'title'" class="container-fluid">
+			<accordion-group  ng-repeat="materia in materias2 | orderBy: 'config.nome'" class="container-fluid">
 			<accordion-heading> {{materia.config.nome}} <span class="badge {{classMedia(materia)}}  pull-right">{{calcularMedia(materia)}}</span><span class="badge badge-success pull-right">{{materia.config.faltasPermitidas-materia.faltas}}</span></accordion-heading>
 			  <form >
 			  	<div class="controls controls-row">
