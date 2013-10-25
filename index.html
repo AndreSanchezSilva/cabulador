@@ -18,29 +18,28 @@
 			  	<div class="controls controls-row">
 			  		<div class="controls-row">
 			  			<h4>Nome da Disciplina e Faltas </h4>
-			  			<br>
-			  			
+			  			<br>		
 			  			<input class="span3" type="text" placeholder="Nome da Matéria" ng-model="materia.config.nome">
-			  		</div>
-			  		<div class="controls-row">
-			  			<input class="span2" type="text" placeholder="Faltas" ng-model="materia.faltas">
-						<button class="btn btn-warning span1">+1</button>
+			  			
+			  			<div class="input-append">
+						<button type="button" class="btn btn-warning ">+1</button>
+						<input class="span2" type="text" placeholder="Faltas" ng-model="materia.faltas">
+						
+						</div>
 			  		</div>
 					
 				</div>
 				<div class="controls">
 					<h4>Notas</h4>
-					
-
 					<div class="row-fluid">
-						<input class="span3" type="text" ng-model="materia.notasBim[0]" placeholder="1º B">
-						<input class="span3" ng-model="materia.notasBim[1]" type="text" placeholder="2º B">
-						<input class="span3" ng-model="materia.notasSub[0]" type="text" placeholder="1º Sub">
+						<input class="span4" type="number" ng-model="materia.notasBim[0]" placeholder="1º B">
+						<input class="span4" ng-model="materia.notasBim[1]" type="number" placeholder="2º B">
+						<input class="span4" ng-model="materia.notasSub[0]" type="number" placeholder="1º Sub">
 					</div>
 					<div class="row-fluid">
-						<input class="span3" ng-model="materia.notasBim[2]" type="text" placeholder="3º B">
-						<input class="span3" ng-model="materia.notasBim[3]" type="text" placeholder="4º B">
-						<input class="span3" ng-model="materia.notasSub[1]" type="text" placeholder="2º Sub">					
+						<input class="span4" ng-model="materia.notasBim[2]" type="number" placeholder="3º B">
+						<input class="span4" ng-model="materia.notasBim[3]" type="number" placeholder="4º B">
+						<input class="span4" ng-model="materia.notasSub[1]" type="number" placeholder="2º Sub">					
 					</div>
 				
 					
