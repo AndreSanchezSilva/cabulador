@@ -90,7 +90,7 @@ function NotasAppCrl($scope) {
     var nota4 = materia.notasBim[3]!=null?parseFloat(materia.notasBim[3]):0;
 
     var media =  (nota1+nota2+nota3+nota4)-24;
-    media = media.toFixed(1);
+    //media = media.toFixed(1);
 
     if (media>0)
     	media = '+' + media;
