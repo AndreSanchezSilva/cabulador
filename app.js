@@ -2,7 +2,7 @@ angular.module('NotasApp', ['ui.bootstrap']);
 function NotasAppCrl($scope) {
   $scope.oneAtATime = true;
 
-  $scope.materias2 = [
+  $scope.materias = [
     {
       config: {
         nome: "Programação II",
@@ -81,6 +81,7 @@ function NotasAppCrl($scope) {
       faltas: 0
     }
   ];
+
   $scope.calcularMedia = function ( materia ) {
 
     var nota1 = materia.notasBim[0]!=''?parseFloat(materia.notasBim[0]):0;
@@ -92,6 +93,7 @@ function NotasAppCrl($scope) {
 
     return media;
   }
+
   $scope.classMedia = function ( materia ) {
     switch (true) {
       case (this.calcularMedia(materia)>0):
@@ -101,5 +103,23 @@ function NotasAppCrl($scope) {
           return 'badge-important'
         break;
     }
+    
+  }
+
+  $scope.recuperaIndice = function ( materia ) {
+  	return this.materias.indexOf(materia);
+  }
+
+  $scope.somarFalta = function ( materia ) {
+  	index = this.recuperaIndice(materia);
+  	if(this.materias[index].faltas!='')
+  		this.materias[index].faltas = parseFloat(this.materias[index].faltas) + 2;
+  	else
+  		this.materias[index].faltas = 2;
+  }
+
+  $scope.excluirMateria = function ( materia ) {
+  	index = this.recuperaIndice(materia);
+  	this.materias.splice(index,1);
   }
 }
