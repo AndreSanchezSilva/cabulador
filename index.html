@@ -13,7 +13,7 @@
 		<h2>Cabulador</h2>
 		<accordion close-others="oneAtATime" >
 			<accordion-group  ng-repeat="materia in materias | orderBy: 'config.nome'" class="container-fluid">
-			<accordion-heading> {{materia.config.nome}} <span class="badge {{classMedia(materia)}}  pull-right">{{calcularMedia(materia)}}</span><span class="badge badge-success pull-right">{{materia.config.faltasPermitidas-materia.faltas}}</span></accordion-heading>
+			<accordion-heading> {{materia.config.nome}} <span class="badge {{classMedia(materia)}}  pull-right" style="margin-left: 5px">{{calcularMedia(materia)}}</span><span class="badge badge-success pull-right">{{materia.config.faltasPermitidas-materia.faltas}}</span></accordion-heading>
 			  <form >
 			  		<div class="controls">
 			  			<h4>Nome da Disciplina e Faltas </h4>
