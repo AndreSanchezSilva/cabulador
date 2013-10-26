@@ -1,8 +1,8 @@
-angular.module('NotasApp', ['ui.bootstrap']);
-function NotasAppCrl($scope) {
+angular.module('NotasApp', ['ui.bootstrap','LocalStorageModule']);
+function NotasAppCrl($scope, localStorageService) {
   $scope.oneAtATime = true;
 
-  $scope.materias = [
+  $scope.materias2 = [
     {
       config: {
         nome: "Programação II",
@@ -10,7 +10,7 @@ function NotasAppCrl($scope) {
         notaMinima: 240,
         bimestral: true
       },
-      notasBim: [10,10,9.4,null],
+      notasBim: [{nomeItem: 'laranja',pego: false},10,9.4,null],
       notasSub: ['',''],
       faltas: 34
     },
@@ -82,34 +82,77 @@ function NotasAppCrl($scope) {
     }
   ];
 
+  $scope.getLocal = function () {
+    this.materias = localStorageService.get('materias');
+  }
+
+  $scope.setLocal = function (input) {
+    console.log(input);
+    this.materias[this.recuperaIndice(input)] = input;
+    console.log(this.materias[this.recuperaIndice(input)]);
+    localStorageService.clearAll();
+    localStorageService.add('materias',this.materias);
+
+    console.log(localStorageService.get('materias'));
+  }
+  
+  $scope.converterNota = function ( nota ) {
+    newNota  = [];
+    for (var i = nota.length - 1; i >= 0; i--) {
+      nota[i] = nota[i]!=null?parseFloat(nota[i]):0;
+      newNota.push(nota[i]);
+    };
+    return newNota;
+  }
   $scope.calcularMedia = function ( materia ) {
-
-    var nota1 = materia.notasBim[0]!=null?parseFloat(materia.notasBim[0]):0;
-    var nota2 = materia.notasBim[1]!=null?parseFloat(materia.notasBim[1]):0;
-    var nota3 = materia.notasBim[2]!=null?parseFloat(materia.notasBim[2]):0;
-    var nota4 = materia.notasBim[3]!=null?parseFloat(materia.notasBim[3]):0;
-
-    var media =  (nota1+nota2+nota3+nota4)-24;
+    var nota = this.converterNota(materia.notasBim);
+    var notaSub = this.converterNota(materia.notasSub);
+    var media = 0;
+    var s = 1;
+    for (var i = nota.length - 1; i >= 0; i--) {
+      if(nota[i]<notaSub[s])
+        nota[i] = notaSub[s];
+      if (i==2) {
+        s--;
+      };
+    };
+    for (var i = nota.length - 1; i >= 0; i--) {
+      media += nota[i];
+    };
+    media -=  24;
     //media = media.toFixed(1);
-
-    if (media>0)
-    	media = '+' + media;
-
     return media;
   }
 
   $scope.classMedia = function ( materia ) {
     switch (true) {
       case (this.calcularMedia(materia)>=0):
-          return 'badge-success'
+          return 'badge-success';
         break;
       default:
-          return 'badge-important'
+          return 'badge-important';
         break;
-    }
-    
+    }    
   }
 
+  $scope.calcularFaltas = function ( materia ) {
+    return (materia.config.faltasPermitidas-materia.faltas);
+  }
+  $scope.cadastrarMateria = function ( nome ) {
+    var novaMateria =    {
+      config: {
+        nome: nome,
+        faltasPermitidas: 40,
+        notaMinima: 240,
+        bimestral: true
+      },
+      notasBim: [null,null,null,null],
+      notasSub: ['',''],
+      faltas: 0
+    };
+    this.materias.push(novaMateria);
+    localStorageService.add('materias',this.materias);
+  };
   $scope.recuperaIndice = function ( materia ) {
   	return this.materias.indexOf(materia);
   }
@@ -125,5 +168,6 @@ function NotasAppCrl($scope) {
   $scope.excluirMateria = function ( materia ) {
   	index = this.recuperaIndice(materia);
   	this.materias.splice(index,1);
+    localStorageService.add('materias',this.materias);
   }
 }
