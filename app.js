@@ -150,6 +150,7 @@ function NotasAppCrl($scope, localStorageService) {
       notasSub: ['',''],
       faltas: 0
     };
+    if (!this.materias) {this.materias = []};
     this.materias.push(novaMateria);
     localStorageService.add('materias',this.materias);
   };
