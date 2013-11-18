@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html ng-app="NotasApp">
+<head>
+	<title>Cabulador</title>
+	<link rel="stylesheet" type="text/css" href="./Lib/css/bootstrap2.min.css">    
+	<link rel="stylesheet" type="text/css" href="./Lib/css/app.css"> 
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<header>
+   		<h1>Cabulador</h1>
+    </header>
+
+    <div class="container-fluid" ng-controller="NotasAppCrl">
+    	<div id="novaMateria">
+	    	<div class="input-append">
+			  <input class="span2" type="text" placeholder="Nova matéria" ng-model="novaMateria">
+			  <button class="btn btn-success" type="button " ng-click="cadastrarMateria(novaMateria)"><i class="icon-plus icon-white"></i> </button>
+			</div>
+    	</div>
+    	
+    	<accordion>
+		    <accordion-group class="accordion-card" ng-repeat="materia in materias | orderBy: 'config.nome'">
+		    	<accordion-heading >
+		           <div class="accordion-header">
+		           	{{materia.config.nome}}
+		           </div>
+		        </accordion-heading>
+		        <div class="row-fuild">
+		        	<div class="span2 pull-right">
+		        		<a class="config" href="#"><i class="icon-wrench pull-right"></i></a>
+		        	</div>
+		        </div>
+		    	<div class="row-fluid">
+		    		<div class="span6">
+		    			<span class="nota-titulo">Notas</span>
+		    		</div>
+		    		<div class="span6">
+		    			<span class="media-anual pull-right text-success">{{calcularMedia(materia) | number:1}}</span>
+		    			<span class="media-anual-titulo pull-right">Média Anual</span>
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span10 offset1 semestre-titulo">
+		    			1º Semestre
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2 center bimestre-titulo offset2">
+		    			1º Bim
+		    		</div>
+		    		<div class="span2 center bimestre-titulo">
+		    			2º Bim
+		    		</div>
+		    		<div class="span2 center bimestre-titulo">
+		    			Sub
+		    		</div>
+		    		<div class="span2 center bimestre-titulo">
+		    			Média
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2 nota center offset2" ng-class="corNotas(materia.notasBim[0])">
+		    			{{materia.notasBim[0] | number:1}}
+		    		</div>
+		    		<div class="span2 nota center" ng-class="corNotas(materia.notasBim[1])">
+		    			{{materia.notasBim[1] | number:1}}
+		    		</div>
+		    		<div class="span2 nota center" ng-class="corNotas(materia.notasSub[0])">
+		    			{{materia.notasSub[0] | number:1}}
+		    		</div>
+		    		<div class="span2 nota center" ng-class="corNotas(caclularMediaSemestral(materia,2))">
+		    			{{caclularMediaSemestral(materia,1) | number:1}}
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span10 offset1 semestre-titulo">
+		    			2º Semestre
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2 center bimestre-titulo offset2">
+		    			3º Bim
+		    		</div>
+		    		<div class="span2 center bimestre-titulo">
+		    			4º Bim
+		    		</div>
+		    		<div class="span2 center bimestre-titulo">
+		    			Sub
+		    		</div>
+		    		<div class="span2 center bimestre-titulo">
+		    			Média
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span2 nota center offset2" ng-class="corNotas(materia.notasBim[2])">
+		    			{{materia.notasBim[2] | number:1}}
+		    		</div>
+		    		<div class="span2 nota center" ng-class="corNotas(materia.notasBim[3])">
+		    			{{materia.notasBim[3] | number:1}}
+		    		</div>
+		    		<div class="span2 nota center" ng-class="corNotas(materia.notasSub[1])">
+		    			{{materia.notasSub[1] | number:1}}
+		    		</div>
+		    		<div class="span2 nota center" ng-class="corNotas(caclularMediaSemestral(materia,2))">
+		    			{{caclularMediaSemestral(materia,2) | number:1}}
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<span class="faltas-titulo">Faltas</span>
+		    		<span class="faltas-permitidas">Permitidas: {{materia.config.faltasPermitidas}}</span>
+		    	</div>		        
+		    	<div class="row-fluid">
+		    		<div class="span12">
+		    			<div class="falta-cont">
+		    				<span class="faltas" ng-class="corFaltas(materia)">{{materia.faltas}}</span>
+		    				<button class="btn"s ng-click="somarFalta(materia)"> +2 </button>
+		    			</div>		    			
+		    		</div>
+		    	</div>
+		    	<div class="row-fluid">
+		    		<div class="span12">
+		    			<progress percent="progressoFalta(materia)" class="progress-striped active">
+		    		</div>
+		    	</div>
+		    </accordion-group>
+	  	</accordion>
+    </div>
+
+    <footer>
+    	<span class="pull-right">Desenvolvido por: André Sanchez</span>
+    </footer>
+
+    <script type="text/javascript" src="./Lib/js/angular.min.js"></script>
+	<script src="./Lib/js/ui-bootstrap-tpls-0.6.0.min.js"></script>
+	<script src="./app.js"></script>
+	<script src="./Lib/js/angular-local-storage.js"></script>	
+</body>
+</html>

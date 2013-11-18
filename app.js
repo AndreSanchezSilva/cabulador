@@ -2,7 +2,7 @@ angular.module('NotasApp', ['ui.bootstrap','LocalStorageModule']);
 function NotasAppCrl($scope, localStorageService) {
   $scope.oneAtATime = true;
 
-  $scope.materias2 = [
+  $scope.materias = [
     {
       config: {
         nome: "Programação II",
@@ -10,7 +10,7 @@ function NotasAppCrl($scope, localStorageService) {
         notaMinima: 240,
         bimestral: true
       },
-      notasBim: [{nomeItem: 'laranja',pego: false},10,9.4,null],
+      notasBim: [10,10,9.4,null],
       notasSub: ['',''],
       faltas: 34
     },
@@ -60,7 +60,7 @@ function NotasAppCrl($scope, localStorageService) {
     },
     {
       config: {
-        nome: "Sociocultural e Ética",
+        nome: "Formação Sociocultural e Ética",
         faltasPermitidas: 40,
         notaMinima: 240,
         bimestral: true
@@ -78,7 +78,7 @@ function NotasAppCrl($scope, localStorageService) {
       },
       notasBim: [8.5,8.6,10,null],
       notasSub: ['',''],
-      faltas: 12
+      faltas: 2
     }
   ];
 
@@ -99,12 +99,22 @@ function NotasAppCrl($scope, localStorageService) {
   $scope.converterNota = function ( nota ) {
     newNota  = [];
     for (var i = nota.length - 1; i >= 0; i--) {
-      nota[i] = nota[i]!=null?parseFloat(nota[i]):0;
+      nota[i] = ((nota[i]==null)||(nota[i]==''))?0:parseFloat(nota[i]);
       newNota.push(nota[i]);
     };
     return newNota;
   }
-  $scope.calcularMedia = function ( materia ) {
+
+  $scope.converterNota2 = function ( nota ) {
+    newNota  = [];
+    for (var i = 0; i < nota.length ; i++) {
+      nota[i] = ((nota[i]==null)||(nota[i]==''))?0:parseFloat(nota[i]);
+      newNota.push(nota[i]);
+    };
+    return newNota;
+  }
+
+  $scope.calcularQtoFalta = function ( materia ) {
     var nota = this.converterNota(materia.notasBim);
     var notaSub = this.converterNota(materia.notasSub);
     var media = 0;
@@ -124,6 +134,84 @@ function NotasAppCrl($scope, localStorageService) {
     return media;
   }
 
+  $scope.corFaltas = function ( materia ) {
+    var valor = (100*materia.faltas)/materia.config.faltasPermitidas;
+    var cor;
+    if (valor < 33) {
+      classe = 'text-success';
+    } else if (valor < 66) {
+      classe = 'text-warning';
+    } else {
+      classe = 'text-error';
+    }
+
+    return classe;
+  }
+
+  $scope.corNotas = function ( nota ) {
+    var valor = (100*nota)/10;
+    var cor;
+    if (nota == '') {
+      classe = 'muted';      
+    } else if (valor < 33) {
+      classe = 'text-error';
+    } else if (valor < 66) {
+      classe = 'text-warning';
+    } else {
+      classe = 'text-success';
+    }
+
+    return classe;
+  }
+
+  $scope.calcularMedia = function ( materia ) {
+    var nota = this.converterNota(materia.notasBim);
+    var notaSub = this.converterNota(materia.notasSub);
+    var soma = 0;
+    var s = 1;
+    var count = 0;
+    for (var i = nota.length - 1; i >= 0; i--) {
+      if(nota[i]!='') {
+        count++;
+      }
+      if(nota[i]<notaSub[s])
+        nota[i] = notaSub[s];
+      if (i==2) {
+        s--;
+      };      
+    };
+    for (var i = nota.length - 1; i >= 0; i--) {
+      soma += nota[i];
+    };
+    //media = media.toFixed(1);
+    return (soma/count);
+  }
+
+  $scope.caclularMediaSemestral = function (materia, semestre) {
+    var notas =  this.converterNota2(materia.notasBim);
+    var subs = this.converterNota2(materia.notasSub);
+    var soma = 0;
+    var count = 0;
+    if (semestre==1) {
+      var ini = 0;
+      var max = 2;
+      var sub = 0;
+    } else {
+      var ini = 2;
+      var max = 4;
+      var sub = 1;
+    };
+    for (var ini = ini; ini < max; ini++) {
+      if(notas[ini]<subs[sub]){
+        notas[ini] = subs[sub];
+      }
+      soma += notas[ini];
+      if (notas[ini]!='') {
+        count++;
+      };
+    };
+    return soma / count;
+  }
   $scope.classMedia = function ( materia ) {
     switch (true) {
       case (this.calcularMedia(materia)>=0):
@@ -138,6 +226,24 @@ function NotasAppCrl($scope, localStorageService) {
   $scope.calcularFaltas = function ( materia ) {
     return (materia.config.faltasPermitidas-materia.faltas);
   }
+
+  $scope.progressoFalta = function ( materia ) {
+    var valor = (100*materia.faltas)/materia.config.faltasPermitidas;
+    var type;
+    if (valor < 33) {
+      type = 'success';
+    } else if (valor < 66) {
+      type = 'warning';
+    } else {
+      type = 'danger';
+    }
+    var progresso = {
+      value: valor,
+      type: type
+    };
+    return progresso;
+  }
+
   $scope.cadastrarMateria = function ( nome ) {
     var novaMateria =    {
       config: {
@@ -146,7 +252,7 @@ function NotasAppCrl($scope, localStorageService) {
         notaMinima: 240,
         bimestral: true
       },
-      notasBim: [null,null,null,null],
+      notasBim: ['','','',''],
       notasSub: ['',''],
       faltas: 0
     };
